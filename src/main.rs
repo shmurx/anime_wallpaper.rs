@@ -81,7 +81,10 @@ fn download_wallpaper_wallhaven(
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config = load_config("anime_list.toml")?;
+    let config_path = dirs::home_dir()
+        .ok_or("Could not determine home directory")?
+        .join(".config/anime_list.toml");
+    let config = load_config(config_path.to_str().ok_or("Invalid config path")?)?;
     let anime_titles = config.animes;
 
     if anime_titles.is_empty() {

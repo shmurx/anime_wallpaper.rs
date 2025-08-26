@@ -1,11 +1,5 @@
 animes = [
-    "Akira",
-    "Cowboy Bebop",
-    "Ghost in the Shell",
-    "Hunter x Hunter",
     "Jujutsu Kaisen",
     "Neon Genesis Evangelion",
     "One Punch Man",
-    "Psycho Pass",
-    "Serial Experiments Lain"
 ]

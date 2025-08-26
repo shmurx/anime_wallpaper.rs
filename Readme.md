@@ -26,6 +26,12 @@ Install the binary to your system (this may require `sudo`):
 sudo cp /target/release/anime_wallpaper /usr/local/bin/
 ```
 
+Copy the example anime list to `~/.config/` and adapt to your preferences:
+
+```bash
+cp anime_list.toml ~/.config
+```
+
 Now you can run `anime_wallpaper` from anywhere on your system.
 
 ### Systemd Service and Timer
