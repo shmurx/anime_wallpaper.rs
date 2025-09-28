@@ -72,7 +72,7 @@ fn download_wallpaper_wallhaven(
             "set",
             "org.gnome.desktop.background",
             "picture-options",
-            "centered",
+            "wallpaper",
         ])
         .status()?;
 
@@ -95,8 +95,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let random_title = anime_titles.choose(&mut thread_rng()).unwrap();
     println!("Searching wallpaper for: {}", random_title);
 
-    let save_path = Path::new("wallpaper.jpg");
-    download_wallpaper_wallhaven(random_title, save_path)?;
-    println!("Success!");
+    // Save wallpaper to ~/.cache/anime_wallpaper/wallpaper.jpg
+    let cache_dir = dirs::home_dir()
+        .ok_or("Could not determine home directory")?
+        .join(".cache/anime_wallpaper");
+    fs::create_dir_all(&cache_dir)?;
+    let save_path = cache_dir.join("wallpaper.jpg");
+    download_wallpaper_wallhaven(random_title, &save_path)?;
+    println!("Success! Wallpaper saved to {}", save_path.display());
     Ok(())
 }

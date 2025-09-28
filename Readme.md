@@ -4,7 +4,7 @@
 
 This is a small tool that sets a random anime wallpaper every hour.
 
-It picks a random anime in `anime_list.toml` and fetches a random wallpaper from `wallhaven.cc`.
+It picks a random anime from your config file at `~/.config/anime_list.toml` and fetches a random wallpaper from `wallhaven.cc`.
 
 Currently, this only works on gnome, but it can probably be adapted to set the wallpaper for whatever window manager/DE you're using without much effort.
 
@@ -23,13 +23,14 @@ cargo build --release
 Install the binary to your system (this may require `sudo`):
 
 ```bash
-sudo cp /target/release/anime_wallpaper /usr/local/bin/
+sudo cp target/release/anime_wallpaper /usr
+/local/bin
 ```
 
-Copy the example anime list to `~/.config/` and adapt to your preferences:
+You can copy the provided `anime_list.sample.toml` to `~/.config/anime_list.toml` as a starting point:
 
 ```bash
-cp anime_list.toml ~/.config
+cp anime_list.sample.toml ~/.config/anime_list.toml
 ```
 
 Now you can run `anime_wallpaper` from anywhere on your system.
