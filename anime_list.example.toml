@@ -1,6 +1,18 @@
-// place this file in ~/.config/
+# place this file in ~/.config/
 animes = [
     "Jujutsu Kaisen",
     "Neon Genesis Evangelion",
     "One Punch Man",
 ]
+## optional parameters with their defaults
+# purity     = "100"
+# resolution = "3840x2160"
+# filename   = "wallpaper.jpg"
+# directory  = ${CACHE_DIR}   # dynamically determined
+# auth       = None           # (no auth token set)
+# desktop    = "Gnome"
+
+## supported desktops are "Gnome" and Custom (example below)
+# [desktop.Custom]
+# command = "my_change_theme_script.sh"  # wallpaper path passed as $1
+# args    = [ "other", "args" ]             # passed after $1
