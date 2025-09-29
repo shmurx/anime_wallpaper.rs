@@ -25,8 +25,8 @@ enum Desktop {
     Gnome,
     Custom {
         command: String,
-        args: Option<Vec<String>>
-    }
+        args: Option<Vec<String>>,
+    },
 }
 
 #[derive(Debug, Deserialize)]
@@ -38,21 +38,21 @@ struct AnimeConfig {
     filename: String,
     directory: Option<String>,
     auth: Option<String>,
-    desktop: Desktop
+    desktop: Desktop,
 }
 
 impl Default for AnimeConfig {
-  fn default() -> Self {
-     Self {
-         animes: vec![],
-         purity: "100".to_string(),
-         resolution: "3840x2160".to_string(),
-         filename: "wallpaper.jpg".to_string(),
-         directory: None,
-         auth: None,
-         desktop: Desktop::Gnome
-     }
-  }
+    fn default() -> Self {
+        Self {
+            animes: vec![],
+            purity: "100".to_string(),
+            resolution: "3840x2160".to_string(),
+            filename: "wallpaper.jpg".to_string(),
+            directory: None,
+            auth: None,
+            desktop: Desktop::Gnome,
+        }
+    }
 }
 
 fn load_config(path: &str) -> Result<AnimeConfig, Box<dyn std::error::Error>> {
@@ -62,13 +62,11 @@ fn load_config(path: &str) -> Result<AnimeConfig, Box<dyn std::error::Error>> {
 }
 
 fn prepare_output_file(cfg: &AnimeConfig) -> Result<PathBuf, Box<dyn std::error::Error>> {
-    let dir  = match &cfg.directory {
+    let dir = match &cfg.directory {
         &Some(ref out) => PathBuf::from(out),
-        &None => {
-            dirs::home_dir()
-                .ok_or("Could not determine home directory")?
-                .join(".cache/anime_wallpaper")
-        }
+        &None => dirs::home_dir()
+            .ok_or("Could not determine home directory")?
+            .join(".cache/anime_wallpaper"),
     };
     fs::create_dir_all(&dir)?;
     Ok(dir.join(&cfg.filename))
@@ -77,7 +75,7 @@ fn prepare_output_file(cfg: &AnimeConfig) -> Result<PathBuf, Box<dyn std::error:
 fn download_wallpaper_wallhaven(
     query: &str,
     config: &AnimeConfig,
-    save_path: &Path
+    save_path: &Path,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new();
     let url = format!(
@@ -87,7 +85,7 @@ fn download_wallpaper_wallhaven(
         config.resolution,
         match &config.auth {
             &Some(ref auth) => format!("&apikey={}", auth),
-            &None => String::new()
+            &None => String::new(),
         }
     );
     let resp = client.get(&url).send()?.json::<WallhavenResponse>()?;
@@ -103,7 +101,10 @@ fn download_wallpaper_wallhaven(
     Ok(())
 }
 
-fn set_wallpaper(save_path: PathBuf, config: AnimeConfig) -> Result<(), Box<dyn std::error::Error>> {
+fn set_wallpaper(
+    save_path: PathBuf,
+    config: AnimeConfig,
+) -> Result<(), Box<dyn std::error::Error>> {
     println!("Setting wallpaper using {:?}", config.desktop);
     let absolute_path = save_path.canonicalize()?;
     let path_str = absolute_path.to_str().ok_or("Invalid path")?;
@@ -127,14 +128,18 @@ fn set_wallpaper(save_path: PathBuf, config: AnimeConfig) -> Result<(), Box<dyn 
                     "wallpaper",
                 ])
                 .status()?;
-        },
-        Desktop::Custom { command, args: None } => {
+        }
+        Desktop::Custom {
+            command,
+            args: None,
+        } => {
             Command::new(command).arg(path_str).status()?;
         }
-        Desktop::Custom { command, args: Some(args) } => {
-           Command::new(command).arg(path_str)
-                .args(args)
-                .status()?;
+        Desktop::Custom {
+            command,
+            args: Some(args),
+        } => {
+            Command::new(command).arg(path_str).args(args).status()?;
         }
     }
     Ok(())

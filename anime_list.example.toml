@@ -15,4 +15,4 @@ animes = [
 ## supported desktops are "Gnome" and Custom (example below)
 # [desktop.Custom]
 # command = "my_change_theme_script.sh"  # wallpaper path passed as $1
-# args    = [ "other", "args" ]             # passed after $1
+# args    = [ "other", "args" ]          # passed after $1
