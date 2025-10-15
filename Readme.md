@@ -27,13 +27,29 @@ sudo cp target/release/anime_wallpaper /usr
 /local/bin
 ```
 
-You can copy the provided `anime_list.sample.toml` to `~/.config/anime_list.toml` as a starting point:
+
+You can copy the provided `anime_list.example.toml` to `~/.config/anime_list.toml` as a starting point:
 
 ```bash
-cp anime_list.sample.toml ~/.config/anime_list.toml
+cp anime_list.example.toml ~/.config/anime_list.toml
 ```
 
-Now you can run `anime_wallpaper` from anywhere on your system.
+#### Config options
+
+The config file supports the following options:
+
+- `animes`: List of anime titles to search for wallpapers.
+- `purity`: (optional) Wallhaven purity code, default: `100`.
+- `resolution`: (optional) Desired wallpaper resolution, default: `3840x2160`.
+- `filename`: (optional) Output filename, default: `wallpaper.jpg`.
+- `directory`: (optional) Output directory, default: `${CACHE_DIR}`.
+- `auth`: (optional) Wallhaven API key, default: none.
+- `desktop`: (optional) Desktop environment, default: `Gnome`.
+- `page`: (optional) Page number to fetch from Wallhaven (default: random 1-10).
+- `sorting`: (optional) Sorting method for results, e.g. `views`, `random`, `favorites`, `toplist` (default: `views`).
+- `order`: (optional) Order for sorting, either `desc` or `asc` (default: `desc`).
+
+See the example config for more details.
 
 ### Systemd Service and Timer
 

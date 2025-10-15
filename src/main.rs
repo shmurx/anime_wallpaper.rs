@@ -29,6 +29,7 @@ enum Desktop {
     },
 }
 
+
 #[derive(Debug, Deserialize)]
 #[serde(default)]
 struct AnimeConfig {
@@ -39,10 +40,14 @@ struct AnimeConfig {
     directory: Option<String>,
     auth: Option<String>,
     desktop: Desktop,
+    page: u32,
+    sorting: String, // e.g. "views", "random", "favorites", "toplist", etc.
+    order: String,   // "desc" or "asc"
 }
 
 impl Default for AnimeConfig {
     fn default() -> Self {
+        let mut rng = thread_rng();
         Self {
             animes: vec![],
             purity: "100".to_string(),
@@ -51,6 +56,9 @@ impl Default for AnimeConfig {
             directory: None,
             auth: None,
             desktop: Desktop::Gnome,
+            page: rand::Rng::gen_range(&mut rng, 1..=10),
+            sorting: "views".to_string(),
+            order: "desc".to_string(),
         }
     }
 }
@@ -76,16 +84,22 @@ fn download_wallpaper_wallhaven(
     query: &str,
     config: &AnimeConfig,
     save_path: &Path,
+    page: u32,
+    sorting: &str,
+    order: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new();
     let url = format!(
-        "https://wallhaven.cc/api/v1/search?q={}&categories=010&purity={}&resolutions={}&sorting=views&order=des{}",
+        "https://wallhaven.cc/api/v1/search?q={}&categories=010&purity={}&resolutions={}&sorting={}&order={}&page={}{}",
         urlencoding::encode(query),
         config.purity,
         config.resolution,
+        sorting,
+        order,
+        page,
         match &config.auth {
-            &Some(ref auth) => format!("&apikey={}", auth),
-            &None => String::new(),
+            Some(auth) => format!("&apikey={}", auth),
+            None => String::new(),
         }
     );
     let resp = client.get(&url).send()?.json::<WallhavenResponse>()?;
@@ -160,7 +174,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Searching wallpaper for '{}'", random_title);
 
     let output = prepare_output_file(&config)?;
-    download_wallpaper_wallhaven(random_title, &config, &output)?;
+    download_wallpaper_wallhaven(random_title, &config, &output, config.page, &config.sorting, &config.order)?;
     set_wallpaper(output, config)?;
     println!("Wallpaper set from Wallhaven!");
     Ok(())

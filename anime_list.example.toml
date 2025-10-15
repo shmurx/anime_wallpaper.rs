@@ -1,16 +1,16 @@
 # place this file in ~/.config/
-animes = [
-    "Jujutsu Kaisen",
-    "Neon Genesis Evangelion",
-    "One Punch Man",
-]
-## optional parameters with their defaults
+animes = ["Jujutsu Kaisen", "Neon Genesis Evangelion", "One Punch Man"]
+
+## parameters with their defaults
 # purity     = "100"
 # resolution = "3840x2160"
 # filename   = "wallpaper.jpg"
-# directory  = ${CACHE_DIR}   # dynamically determined
-# auth       = None           # (no auth token set)
+# optional: directory = ${CACHE_DIR}   # dynamically determined if not set
+# optional: auth = None                # no auth token set if not specified
 # desktop    = "Gnome"
+# page       = 5              # will be random (1-10) if not set
+# sorting    = "views"        # can be "random", "favorites", "toplist", etc.
+# order      = "desc"        # can be "asc" or "desc"
 
 ## supported desktops are "Gnome" and Custom (example below)
 # [desktop.Custom]
